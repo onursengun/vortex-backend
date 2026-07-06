@@ -34,7 +34,7 @@ async def list_models():
 async def chat_with_gemini(request: ChatRequest, token: str = Depends(verify_vortex_request)):
     try:
         # Modeli burada çağırıyoruz
-        model = genai.GenerativeModel('gemini-1.5-flash')
+        model = genai.GenerativeModel('gemini-1.5-flash-latest')
         response = model.generate_content(request.message)
         return {"response": response.text}
     except Exception as e:
