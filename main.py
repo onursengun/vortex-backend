@@ -43,7 +43,7 @@ async def chat_with_gemini(
     
     try:
         # 3. Garanti çalışan model ismi
-        model = genai.GenerativeModel('models/gemini-1.5-flash')
+        model = genai.GenerativeModel('models/gemini-2.5-flash')
         response = model.generate_content(request.message)
         return {"response": response.text}
     except Exception as e:
