@@ -51,9 +51,17 @@ async def chat_with_gemini(
 
 @app.get("/")
 async def root():
-    return {"status": "Vortex API is online and functional!"}
-
-# KRİTİK NOKTA: Sunucunun yerel ağa değil, tüm dış dünyaya (0.0.0.0) açılması
-if __name__ == "__main__":
-    port = int(os.environ.get("PORT", 10000))
-    uvicorn.run("main:app", host="0.0.0.0", port=port)
+    if not GEMINI_API_KEY:
+        return {"status": "Hata: API Key bulunamadı"}
+    try:
+        # Google'dan sana özel açık olan modellerin listesini çeker
+        models = []
+        for m in genai.list_models():
+            if 'generateContent' in m.supported_generation_methods:
+                models.append(m.name)
+        return {
+            "status": "Vortex API is online!",
+            "google_izin_verilen_modeller": models
+        }
+    except Exception as e:
+        return {"status": "Sunucu çalışıyor ama Google'a bağlanamadı", "error": str(e)}
